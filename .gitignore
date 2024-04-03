@@ -23,7 +23,7 @@ erl_crash.dump
 /tmp/
 
 # Ignore package tarball (built via "mix hex.build").
-app-*.tar
+satellite_api-*.tar
 
 *.beam
 /config/*.secret.exs

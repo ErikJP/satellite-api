@@ -7,20 +7,19 @@
 # General application configuration
 import Config
 
-config :app,
-  ecto_repos: [App.Repo],
-  generators: [timestamp_type: :utc_datetime, binary_id: true]
+config :satellite_api,
+  ecto_repos: [SatelliteApi.Repo],
+  generators: [binary_id: true]
 
 # Configures the endpoint
-config :app, AppWeb.Endpoint,
+config :satellite_api, SatelliteApiWeb.Endpoint,
   url: [host: "localhost"],
-  adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [json: AppWeb.ErrorJSON],
+    formats: [json: SatelliteApiWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: App.PubSub,
-  live_view: [signing_salt: "oZhUtm2A"]
+  pubsub_server: SatelliteApi.PubSub,
+  live_view: [signing_salt: "7WYkc8Jz"]
 
 # Configures the mailer
 #
@@ -29,7 +28,7 @@ config :app, AppWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :app, App.Mailer, adapter: Swoosh.Adapters.Local
+config :satellite_api, SatelliteApi.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configures Elixir's Logger
 config :logger, :console,

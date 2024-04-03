@@ -1,10 +1,11 @@
 import Config
 
-# Configures Swoosh API Client
-config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: App.Finch
+# For production, don't forget to configure the url host
+# to something meaningful, Phoenix uses this information
+# when generating URLs.
 
-# Disable Swoosh Local Memory Storage
-config :swoosh, local: false
+# Configures Swoosh API Client
+config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: SatelliteApi.Finch
 
 # Do not print debug messages in production
 config :logger, level: :info

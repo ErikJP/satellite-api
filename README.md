@@ -1,4 +1,4 @@
-# App
+# SatelliteApi
 
 To start your Phoenix server:
 
