@@ -9,6 +9,10 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
+## Reference
+  * App setup: https://blog.logrocket.com/build-rest-api-elixir-phoenix/
+  * Scheduling tasks: https://blog.kommit.co/3-ways-to-schedule-tasks-in-elixir-i-learned-in-3-years-working-with-it-a6ca94e9e71d
+
 ## Learn more
 
   * Official website: https://www.phoenixframework.org/

@@ -17,6 +17,9 @@ defmodule SatelliteApiWeb.TleController do
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/tles/#{tle}")
       |> render(:show, tle: tle)
+      {:ok, id} = Map.fetch(tle, :id)
+      {:ok, norad_cat_id} = IO.inspect(Map.fetch(tle, :id))
+      # TODO: using the above IDs, update the value for this NORAD CAT ID in the `satellites` table
     end
   end
 

@@ -17,8 +17,8 @@ defmodule SatelliteApiWeb.SatelliteJSON do
 
   defp data(%Satellite{} = satellite) do
     %{
-      id: satellite.id,
-      norad_cat_id: satellite.norad_cat_id
+      norad_cat_id: satellite.norad_cat_id,
+      latest_tle_id: satellite.latest_tle_id
     }
   end
 end
