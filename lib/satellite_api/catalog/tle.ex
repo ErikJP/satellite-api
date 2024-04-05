@@ -53,6 +53,6 @@ defmodule SatelliteApi.Catalog.Tle do
   def changeset(tle, attrs) do
     tle
     |> cast(attrs, [:ccsds_omm_vers, :comment, :creation_date, :originator, :object_name, :object_id, :center_name, :ref_frame, :time_system, :mean_element_theory, :epoch, :mean_motion, :eccentricity, :inclination, :ra_of_asc_node, :arg_of_pericenter, :mean_anomaly, :ephemeris_type, :classification_type, :norad_cat_id, :element_set_no, :rev_at_epoch, :bstar, :mean_motion_dot, :mean_motion_ddot, :semimajor_axis, :period, :apoapsis, :periapsis, :object_type, :rcs_size, :country_code, :launch_date, :site, :decay_date, :file, :gp_id, :tle_line0, :tle_line1, :tle_line2])
-    |> validate_required([:ccsds_omm_vers, :comment, :creation_date, :originator, :object_name, :object_id, :center_name, :ref_frame, :time_system, :mean_element_theory, :epoch, :mean_motion, :eccentricity, :inclination, :ra_of_asc_node, :arg_of_pericenter, :mean_anomaly, :ephemeris_type, :classification_type, :norad_cat_id, :element_set_no, :rev_at_epoch, :bstar, :mean_motion_dot, :mean_motion_ddot, :semimajor_axis, :period, :apoapsis, :periapsis, :object_type, :rcs_size, :country_code, :launch_date, :site, :decay_date, :file, :gp_id, :tle_line0, :tle_line1, :tle_line2])
+    |> validate_required([:norad_cat_id])
   end
 end
