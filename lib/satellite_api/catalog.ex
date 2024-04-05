@@ -197,4 +197,52 @@ defmodule SatelliteApi.Catalog do
   def change_satellite(%Satellite{} = satellite, attrs \\ %{}) do
     Satellite.changeset(satellite, attrs)
   end
+
+  @doc """
+  Returns the list of latest_tles.
+
+  ## Examples
+
+      iex> list_latest_tles()
+      [%LatestTle{}, ...]
+
+  """
+  def list_latest_tles do
+    satellites = Repo.all(Satellite)
+    Enum.map(satellites, fn(satellite) -> Repo.get!(Tle, satellite.latest_tle_id) end)
+  end
+
+  @doc """
+  Gets a single latest_tle.
+
+  Raises `Ecto.NoResultsError` if the LatestTle does not exist.
+
+  ## Examples
+
+      iex> get_latest_tle!(123)
+      %LatestTle{}
+
+      iex> get_latest_tle!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_latest_tle!(norad_cat_id) do
+    Repo.get!(Satellite, norad_cat_id)
+  end
 end
+
+
+# [
+#   %SatelliteApi.Catalog.Satellite{
+#     __meta__: #Ecto.Schema.Metadata<:loaded, "satellites">,
+#     norad_cat_id: "37951",
+#     latest_tle_id: "101e5f36-7195-4b71-87b3-d1d28a4abf6c",
+#     inserted_at: ~N[2024-04-05 22:14:23],
+#     updated_at: ~N[2024-04-05 22:14:24]
+#   },
+#   %SatelliteApi.Catalog.Satellite{
+#     __meta__: #Ecto.Schema.Metadata<:loaded, "satellites">,
+#     norad_cat_id: "41838",
+#     latest_tle_id: "04f3121e-b6f9-4d5a-ac6b-645d11e4b248",
+#     inserted_at: ~N[2024-04-05 22:14:23],
+#     updated_at: ~N[2024-04-05 22:14:24]

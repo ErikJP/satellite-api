@@ -10,6 +10,9 @@ defmodule SatelliteApi.Scheduler do
   @request_cmd_action "/basicspacedata/query"
   @username parsed_result[:space_track][:username]
   @password parsed_result[:space_track][:password]
+  @satellite_api_uri_base "http://localhost:4000"
+  @tles_api "/api/tles"
+  @satellites_api "/api/satellites"
   use GenServer
 
   @impl true
@@ -35,7 +38,7 @@ defmodule SatelliteApi.Scheduler do
       satellite_norad_ids,
       fn id ->
         HTTPoison.post(
-          "http://localhost:4000/api/satellites",
+          "#{@satellite_api_uri_base}#{@satellites_api}",
           "{\"satellite\": {\"norad_cat_id\": \"#{id}\"}}",
           [{"Content-Type", "application/json"}]
         )
@@ -54,9 +57,8 @@ defmodule SatelliteApi.Scheduler do
   end
 
   defp fetch_space_track_data() do
-    IO.puts("##### ###### FETCHING ##### #####")
-    # TODO: add something here to grab the NORAD_CAT_IDs dynamically from database (`satellites` table)
-    query = "/class/gp/NORAD_CAT_ID/41838,37951/orderby/NORAD_CAT_ID%20asc/limit/5/metadata/true/emptyresult/show"
+    satellites_str_list = get_satellites_str_list()
+    query = "/class/gp/NORAD_CAT_ID/#{satellites_str_list}/orderby/NORAD_CAT_ID%20asc/limit/5/metadata/true/emptyresult/show"
     case HTTPoison.post(
       "#{@uri_base}#{@request_login}",
       "{\"identity\": \"#{@username}\", \"password\": \"#{@password}\", \"query\": \"#{@uri_base}#{@request_cmd_action}#{query}\"}",
@@ -72,23 +74,23 @@ defmodule SatelliteApi.Scheduler do
     end
   end
 
+  defp get_satellites_str_list() do
+    {:ok, %HTTPoison.Response{status_code: 200, body: body}} = HTTPoison.get("#{@satellite_api_uri_base}#{@satellites_api}")
+    {:ok, decoded} = Poison.decode(body)
+    {:ok, data} = Map.fetch(decoded, "data")
+    str_list = for map <- data, reduce: "" do
+      acc -> "#{acc}#{Map.fetch(map, "norad_cat_id") |> elem(1)},"
+    end
+    String.trim(str_list, ",")
+  end
+
   defp load_space_track_data(body) do
     {:ok, decoded} = Poison.decode(body)
     {:ok, data} = Map.fetch(decoded, "data")
     IO.inspect(data)
     for map <- data do
-      IO.inspect(map)
       {:ok, query} = format_tle_map_to_json(map)
-      IO.puts("##### QUERY #####")
-      IO.puts(query)
-      # TODO: replace url with constants
-      # HTTPoison.post(
-      #   "http://localhost:4000/api/tles",
-      #   "{\"tle\": {\"tle_line0\": \"TEST\", \"eccentricity\": \"TEST\", \"time_system\": \"TEST\", \"comment\": \"TEST\", \"periapsis\": \"TEST\", \"ra_of_asc_node\": \"TEST\", \"site\": \"TEST\", \"rev_at_epoch\": \"TEST\", \"rcs_size\": \"TEST\", \"epoch\": \"TEST\", \"ephemeris_type\": \"TEST\", \"arg_of_pericenter\": \"TEST\", \"mean_element_theory\": \"TEST\", \"bstar\": \"TEST\", \"tle_line2\": \"TEST\", \"apoapsis\": \"TEST\", \"mean_anomaly\": \"TEST\", \"ccsds_omm_vers\": \"TEST\", \"object_name\": \"TEST\", \"period\": \"TEST\", \"tle_line1\": \"TEST\", \"inclination\": \"TEST\", \"decay_date\": \"TEST\", \"object_type\": \"TEST\", \"center_name\": \"TEST\", \"originator\": \"TEST\", \"launch_date\": \"TEST\", \"ref_frame\": \"TEST\", \"mean_motion_ddot\": \"TEST\", \"object_id\": \"TEST\", \"country_code\": \"TEST\", \"creation_date\": \"TEST\", \"classification_type\": \"TEST\", \"mean_motion\": \"TEST\", \"file\": \"TEST\", \"element_set_no\": \"TEST\", \"norad_cat_id\": \"41838\", \"mean_motion_dot\": \"TEST\", \"semimajor_axis\": \"TEST\", \"gp_id\": \"TEST\"}}",
-      #   [{"Content-Type", "application/json"}]
-      # )
-      HTTPoison.post("http://localhost:4000/api/tles", query, [{"Content-Type", "application/json"}])
-      IO.puts("\n\n\n##################################\n\n\n")
+      HTTPoison.post("#{@satellite_api_uri_base}#{@tles_api}", query, [{"Content-Type", "application/json"}])
     end
   end
 
