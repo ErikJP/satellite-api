@@ -131,7 +131,7 @@ defmodule SatelliteApi.Catalog do
       ** (Ecto.NoResultsError)
 
   """
-  def get_satellite!(id), do: Repo.get!(Satellite, id)
+  def get_satellite!(norad_cat_id), do: Repo.get!(Satellite, norad_cat_id)
 
   @doc """
   Creates a satellite.

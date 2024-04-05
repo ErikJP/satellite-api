@@ -8,7 +8,7 @@ defmodule SatelliteApiWeb.Router do
   scope "/api", SatelliteApiWeb do
     pipe_through :api
     resources "/tles", TleController, except: [:new, :edit]
-    resources "/satellites", SatelliteController, except: [:new, :edit]
+    resources "/satellites", SatelliteController, except: [:new, :edit], param: "norad_cat_id"
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

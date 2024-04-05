@@ -27,10 +27,21 @@ defmodule SatelliteApi.Scheduler do
       sleep_time = 3 * 60 * 1000  # 3 minutes gets us well outside of top or bottom of the hour
       Process.sleep(sleep_time)
     end
-    fetch_space_track_data()
     # Set up an hourly interval (60 minutes * 60 seconds * 1000 milliseconds = hour_in_milliseconds)
     interval = 60_000  # 60 * 60 * 1000
     :timer.send_interval(interval, :work)
+    satellite_norad_ids = ["41838", "37951"]
+    Enum.map(
+      satellite_norad_ids,
+      fn id ->
+        HTTPoison.post(
+          "http://localhost:4000/api/satellites",
+          "{\"satellite\": {\"norad_cat_id\": \"#{id}\"}}",
+          [{"Content-Type", "application/json"}]
+        )
+      end
+    )
+    handle_info(:work, state)
     {:ok, state}
   end
 
@@ -45,6 +56,11 @@ defmodule SatelliteApi.Scheduler do
 
   defp fetch_space_track_data() do
     IO.puts("##### ###### FETCHING ##### #####")
+    HTTPoison.post(
+      "http://localhost:4000/api/tles",
+      "{\"tle\": {\"tle_line0\": \"TEST\", \"eccentricity\": \"TEST\", \"time_system\": \"TEST\", \"comment\": \"TEST\", \"periapsis\": \"TEST\", \"ra_of_asc_node\": \"TEST\", \"site\": \"TEST\", \"rev_at_epoch\": \"TEST\", \"rcs_size\": \"TEST\", \"epoch\": \"TEST\", \"ephemeris_type\": \"TEST\", \"arg_of_pericenter\": \"TEST\", \"mean_element_theory\": \"TEST\", \"bstar\": \"TEST\", \"tle_line2\": \"TEST\", \"apoapsis\": \"TEST\", \"mean_anomaly\": \"TEST\", \"ccsds_omm_vers\": \"TEST\", \"object_name\": \"TEST\", \"period\": \"TEST\", \"tle_line1\": \"TEST\", \"inclination\": \"TEST\", \"decay_date\": \"TEST\", \"object_type\": \"TEST\", \"center_name\": \"TEST\", \"originator\": \"TEST\", \"launch_date\": \"TEST\", \"ref_frame\": \"TEST\", \"mean_motion_ddot\": \"TEST\", \"object_id\": \"TEST\", \"country_code\": \"TEST\", \"creation_date\": \"TEST\", \"classification_type\": \"TEST\", \"mean_motion\": \"TEST\", \"file\": \"TEST\", \"element_set_no\": \"TEST\", \"norad_cat_id\": \"41838\", \"mean_motion_dot\": \"TEST\", \"semimajor_axis\": \"TEST\", \"gp_id\": \"TEST\"}}",
+      [{"Content-Type", "application/json"}]
+    )
     # TODO: add something here to grab the NORAD_CAT_IDs dynamically from database (`satellites` table)
     # query = "/class/gp/NORAD_CAT_ID/41838,37951/orderby/NORAD_CAT_ID%20asc/limit/5/metadata/true/emptyresult/show"
     # case HTTPoison.post(
@@ -68,5 +84,12 @@ defmodule SatelliteApi.Scheduler do
     for map <- data do
       # TODO UPLOAD TO DB
     end
+    # TODO: replace url with constants
+    # TODO: replace dummy data with real data
+    HTTPoison.post(
+      "http://localhost:4000/api/tles",
+      "{\"tle\": {\"tle_line0\": \"TEST\", \"eccentricity\": \"TEST\", \"time_system\": \"TEST\", \"comment\": \"TEST\", \"periapsis\": \"TEST\", \"ra_of_asc_node\": \"TEST\", \"site\": \"TEST\", \"rev_at_epoch\": \"TEST\", \"rcs_size\": \"TEST\", \"epoch\": \"TEST\", \"ephemeris_type\": \"TEST\", \"arg_of_pericenter\": \"TEST\", \"mean_element_theory\": \"TEST\", \"bstar\": \"TEST\", \"tle_line2\": \"TEST\", \"apoapsis\": \"TEST\", \"mean_anomaly\": \"TEST\", \"ccsds_omm_vers\": \"TEST\", \"object_name\": \"TEST\", \"period\": \"TEST\", \"tle_line1\": \"TEST\", \"inclination\": \"TEST\", \"decay_date\": \"TEST\", \"object_type\": \"TEST\", \"center_name\": \"TEST\", \"originator\": \"TEST\", \"launch_date\": \"TEST\", \"ref_frame\": \"TEST\", \"mean_motion_ddot\": \"TEST\", \"object_id\": \"TEST\", \"country_code\": \"TEST\", \"creation_date\": \"TEST\", \"classification_type\": \"TEST\", \"mean_motion\": \"TEST\", \"file\": \"TEST\", \"element_set_no\": \"TEST\", \"norad_cat_id\": \"TEST\", \"mean_motion_dot\": \"TEST\", \"semimajor_axis\": \"TEST\", \"gp_id\": \"TEST\"}}",
+      [{"Content-Type", "application/json"}]
+    )
   end
 end

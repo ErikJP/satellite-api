@@ -13,13 +13,21 @@ defmodule SatelliteApiWeb.TleController do
 
   def create(conn, %{"tle" => tle_params}) do
     with {:ok, %Tle{} = tle} <- Catalog.create_tle(tle_params) do
+      {:ok, latest_tle_id} = Map.fetch(tle, :id)
+      {:ok, norad_cat_id} = Map.fetch(tle, :norad_cat_id)
+      IO.puts("DID I MAKE IT?????????????????")
+      IO.puts("{\"satellite\": {\"latest_tle_id\": \"#{latest_tle_id}\"}")
+      HTTPoison.patch(
+        "http://localhost:4000/api/satellites/#{norad_cat_id}",
+        "{\"satellite\": {\"latest_tle_id\": \"#{latest_tle_id}\"}}",
+        [{"Content-Type", "application/json"}]
+      )
+      IO.puts("YES I DID!!!!!!!!!!!!!!!!!!!!!!!!")
+      # TODO: using the above IDs, update the value for this NORAD CAT ID in the `satellites` table
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/tles/#{tle}")
       |> render(:show, tle: tle)
-      {:ok, id} = Map.fetch(tle, :id)
-      {:ok, norad_cat_id} = IO.inspect(Map.fetch(tle, :id))
-      # TODO: using the above IDs, update the value for this NORAD CAT ID in the `satellites` table
     end
   end
 
