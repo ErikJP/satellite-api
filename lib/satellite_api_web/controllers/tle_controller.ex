@@ -6,6 +6,9 @@ defmodule SatelliteApiWeb.TleController do
 
   action_fallback SatelliteApiWeb.FallbackController
 
+  @satellite_api_uri_base "http://localhost:4000"
+  @satellites_api "/api/satellites"
+
   def index(conn, _params) do
     tles = Catalog.list_tles()
     render(conn, :index, tles: tles)
@@ -15,15 +18,11 @@ defmodule SatelliteApiWeb.TleController do
     with {:ok, %Tle{} = tle} <- Catalog.create_tle(tle_params) do
       {:ok, latest_tle_id} = Map.fetch(tle, :id)
       {:ok, norad_cat_id} = Map.fetch(tle, :norad_cat_id)
-      IO.puts("DID I MAKE IT?????????????????")
-      IO.puts("{\"satellite\": {\"latest_tle_id\": \"#{latest_tle_id}\"}")
       HTTPoison.patch(
-        "http://localhost:4000/api/satellites/#{norad_cat_id}",
+        "#{@satellite_api_uri_base}#{@satellites_api}/#{norad_cat_id}",
         "{\"satellite\": {\"latest_tle_id\": \"#{latest_tle_id}\"}}",
         [{"Content-Type", "application/json"}]
       )
-      IO.puts("YES I DID!!!!!!!!!!!!!!!!!!!!!!!!")
-      # TODO: using the above IDs, update the value for this NORAD CAT ID in the `satellites` table
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/tles/#{tle}")

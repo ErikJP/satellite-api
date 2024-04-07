@@ -87,7 +87,6 @@ defmodule SatelliteApi.Scheduler do
   defp load_space_track_data(body) do
     {:ok, decoded} = Poison.decode(body)
     {:ok, data} = Map.fetch(decoded, "data")
-    IO.inspect(data)
     for map <- data do
       {:ok, query} = format_tle_map_to_json(map)
       HTTPoison.post("#{@satellite_api_uri_base}#{@tles_api}", query, [{"Content-Type", "application/json"}])
