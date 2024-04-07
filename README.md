@@ -16,6 +16,10 @@ Create the database
   * Drop the database if needed with `mix ecto.drop`
     * NOTE: a fresh database is recommended when restarting the application
 
+Add Space Track API login details
+  * Make a copy of `config/space_track_EXAMPLE.exs` called `config/space_track.exs`
+  * Add Space Track API login details to this new file (file is ignored by git)
+
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
