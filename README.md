@@ -1,4 +1,4 @@
-# SatelliteApi
+aa# SatelliteApi
 
 ## Requirements
   * Elixir 1.16.1 (compiled with Erlang/OTP 26)
@@ -14,6 +14,7 @@ Create the database
   * `mix ecto.create`
   * `mix ecto.migrate`
   * Drop the database if needed with `mix ecto.drop`
+    * NOTE: a fresh database is recommended when restarting the application
 
 To start your Phoenix server:
 
@@ -23,6 +24,57 @@ To start your Phoenix server:
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+
+## Latest TLE API
+  * Endpoints
+    * `GET /api/latest_tles`: retrieve latest TLEs for both (all) satellites
+    * `GET /api/latest_tles/:norad_cat_id`: retrieve the latest TLE for a specified NORAD CAT id
+  * TLE JSON response
+    ```
+    {
+      id:                   binary,
+      norad_cat_id:         string,
+      apoapsis:             string | null,
+      arg_of_pericenter:    string | null,
+      bstar:                string | null,
+      ccsds_omm_vers:       string | null,
+    center_name:            string | null,
+      classification_type:  string | null,
+      comment:              string | null,
+      country_code:         string | null,
+    creation_date:          string | null,
+      decay_date:           string | null,
+      eccentricity:         string | null,
+      element_set_no:       string | null,
+      ephemeris_type:       string | null,
+      epoch:                string | null,
+      file:                 string | null,
+      gp_id:                string | null,
+      inclination:          string | null,
+      launch_date:          string | null,
+      mean_anomaly:         string | null,
+      mean_element_theory:  string | null,
+      mean_motion:          string | null,
+      mean_motion_ddot:     string | null,
+      mean_motion_dot:      string | null,
+      object_name:          string | null,
+      object_id:            string | null,
+      object_type:          string | null,
+      originator:           string | null,
+    periapsis:              string | null,
+      period:               string | null,
+      ra_of_asc_node:       string | null,
+      rcs_size:             string | null,
+      ref_frame:            string | null,
+      rev_at_epoch:         string | null,
+      semimajor_axis:       string | null,
+      site:                 string | null,
+      time_system:          string | null,
+      tle_line0:            string | null,
+      tle_line1:            string | null,
+      tle_line2:            string | null
+    }
+    ```
 
 ## Reference
   * App setup: https://blog.logrocket.com/build-rest-api-elixir-phoenix/
