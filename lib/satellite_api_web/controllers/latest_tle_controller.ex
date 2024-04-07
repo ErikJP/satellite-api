@@ -12,6 +12,7 @@ defmodule SatelliteApiWeb.LatestTleController do
 
   def show(conn, %{"norad_cat_id" => norad_cat_id}) do
     latest_tle = Catalog.get_latest_tle!(norad_cat_id)
+    IO.puts("###################\n###################\n###################\n###################\n")
     render(conn, :show, latest_tle: latest_tle)
   end
 end
