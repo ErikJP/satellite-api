@@ -17,9 +17,10 @@ defmodule SatelliteApi.Application do
       # Start Finch
       {Finch, name: SatelliteApi.Finch},
       # Start the Endpoint (http/https)
-      SatelliteApiWeb.Endpoint
+      SatelliteApiWeb.Endpoint,
       # Start a worker by calling: SatelliteApi.Worker.start_link(arg)
       # {SatelliteApi.Worker, arg}
+      SatelliteApi.Scheduler,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

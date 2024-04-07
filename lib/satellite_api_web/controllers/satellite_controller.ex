@@ -20,21 +20,21 @@ defmodule SatelliteApiWeb.SatelliteController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    satellite = Catalog.get_satellite!(id)
+  def show(conn, %{"norad_cat_id" => norad_cat_id}) do
+    satellite = Catalog.get_satellite!(norad_cat_id)
     render(conn, :show, satellite: satellite)
   end
 
-  def update(conn, %{"id" => id, "satellite" => satellite_params}) do
-    satellite = Catalog.get_satellite!(id)
+  def update(conn, %{"norad_cat_id" => norad_cat_id, "satellite" => satellite_params}) do
+    satellite = Catalog.get_satellite!(norad_cat_id)
 
     with {:ok, %Satellite{} = satellite} <- Catalog.update_satellite(satellite, satellite_params) do
       render(conn, :show, satellite: satellite)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    satellite = Catalog.get_satellite!(id)
+  def delete(conn, %{"norad_cat_id" => norad_cat_id}) do
+    satellite = Catalog.get_satellite!(norad_cat_id)
 
     with {:ok, %Satellite{}} <- Catalog.delete_satellite(satellite) do
       send_resp(conn, :no_content, "")

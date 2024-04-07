@@ -6,12 +6,14 @@ defmodule SatelliteApiWeb.SatelliteControllerTest do
   alias SatelliteApi.Catalog.Satellite
 
   @create_attrs %{
-    norad_cat_id: "some norad_cat_id"
+    norad_cat_id: "some norad_cat_id",
+    latest_tle_id: "some latest_tle_id"
   }
   @update_attrs %{
-    norad_cat_id: "some updated norad_cat_id"
+    norad_cat_id: "some updated norad_cat_id",
+    latest_tle_id: "some updated latest_tle_id"
   }
-  @invalid_attrs %{norad_cat_id: nil}
+  @invalid_attrs %{norad_cat_id: nil, latest_tle_id: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -33,6 +35,7 @@ defmodule SatelliteApiWeb.SatelliteControllerTest do
 
       assert %{
                "id" => ^id,
+               "latest_tle_id" => "some latest_tle_id",
                "norad_cat_id" => "some norad_cat_id"
              } = json_response(conn, 200)["data"]
     end
@@ -54,6 +57,7 @@ defmodule SatelliteApiWeb.SatelliteControllerTest do
 
       assert %{
                "id" => ^id,
+               "latest_tle_id" => "some updated latest_tle_id",
                "norad_cat_id" => "some updated norad_cat_id"
              } = json_response(conn, 200)["data"]
     end

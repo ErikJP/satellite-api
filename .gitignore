@@ -29,3 +29,5 @@ satellite_api-*.tar
 /config/*.secret.exs
 .elixir_ls/
 personal_notes.md
+space_track.exs
+test_data.json

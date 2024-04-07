@@ -147,9 +147,9 @@ defmodule SatelliteApi.CatalogTest do
       assert Catalog.list_satellites() == [satellite]
     end
 
-    test "get_satellite!/1 returns the satellite with given id" do
+    test "get_satellite!/1 returns the satellite with given norad_cat_id" do
       satellite = satellite_fixture()
-      assert Catalog.get_satellite!(satellite.id) == satellite
+      assert Catalog.get_satellite!(satellite.norad_cat_id) == satellite
     end
 
     test "create_satellite/1 with valid data creates a satellite" do
@@ -174,13 +174,13 @@ defmodule SatelliteApi.CatalogTest do
     test "update_satellite/2 with invalid data returns error changeset" do
       satellite = satellite_fixture()
       assert {:error, %Ecto.Changeset{}} = Catalog.update_satellite(satellite, @invalid_attrs)
-      assert satellite == Catalog.get_satellite!(satellite.id)
+      assert satellite == Catalog.get_satellite!(satellite.norad_cat_id)
     end
 
     test "delete_satellite/1 deletes the satellite" do
       satellite = satellite_fixture()
       assert {:ok, %Satellite{}} = Catalog.delete_satellite(satellite)
-      assert_raise Ecto.NoResultsError, fn -> Catalog.get_satellite!(satellite.id) end
+      assert_raise Ecto.NoResultsError, fn -> Catalog.get_satellite!(satellite.norad_cat_id) end
     end
 
     test "change_satellite/1 returns a satellite changeset" do
