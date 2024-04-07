@@ -15,7 +15,6 @@ defmodule SatelliteApi.Scheduler do
   @satellites_api "/api/satellites"
   use GenServer
 
-  @impl true
   def start_link(_) do
     GenServer.start_link(__MODULE__, %{})
   end
