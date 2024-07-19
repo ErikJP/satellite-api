@@ -1,4 +1,4 @@
-aa# SatelliteApi
+# SatelliteApi
 
 ## Requirements
   * Elixir 1.16.1 (compiled with Erlang/OTP 26)
